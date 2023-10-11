@@ -1,8 +1,9 @@
+package versions;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class Mortgage {
+public class MortgageV3 {
     final static byte MONTHS_IN_YEAR = 12;
     final static byte PERCENT = 100;
     public static void main(String[] args){
@@ -24,13 +25,23 @@ public class Mortgage {
         annualInterestRate = (float) readNumber("Annual Interest Rate: ", MIN_ANNUALVALUE, MAX_ANNUALVALUE);
         period = (byte) readNumber("Period (Years): ", MIN_PERIOD, MAX_PERIOD);
            
+        printMortgage(principalValue, period, annualInterestRate);
+
+        printPaymentSchedule(principalValue, period, annualInterestRate);
+        System.out.println("");
+
+    }
+
+    private static void printMortgage(int principalValue, byte period, float annualInterestRate) {
         double mortgage = calculateMortgage(principalValue, annualInterestRate, period);
         
         String mortgageFormatted = NumberFormat.getCurrencyInstance(new Locale.Builder().setLanguage("en").setRegion("US").build()).format(mortgage);
         System.out.println("\nMORTGAGE");
         System.out.println("--------");
         System.out.println("Monthly Payments: " + mortgageFormatted);
+    }
 
+    private static void printPaymentSchedule(int principalValue, byte period, float annualInterestRate) {
         System.out.println("\nPAYMENT SCHEDULE");
         System.out.println("--------");
         for(short month = 1; month <= period * MONTHS_IN_YEAR; month++){
@@ -38,8 +49,6 @@ public class Mortgage {
             String balanceFormatted = NumberFormat.getCurrencyInstance(new Locale.Builder().setLanguage("en").setRegion("US").build()).format(balance);
             System.out.println(balanceFormatted);
         }
-        System.out.println("");
-
     }
 
     public static double readNumber(String prompt, double min, double max){
@@ -49,9 +58,9 @@ public class Mortgage {
         while(true){
             System.out.print(prompt);
             value = scanner.nextFloat();
-            if(value >= min || value <= max)
+            if(value >= min && value <= max)
                 break;
-            System.out.println("Enter a value between " +min + "and" +max); 
+            System.out.println("Enter a value between " +min + " and " +max); 
       
         }
         return value;
